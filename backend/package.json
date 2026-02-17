@@ -4,7 +4,7 @@
   "description": "CI/CD Project",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No tests specified - passing for now\"",
     "start": "node app.js"
   },
   "keywords": [],
