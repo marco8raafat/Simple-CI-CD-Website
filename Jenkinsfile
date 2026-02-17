@@ -22,6 +22,11 @@ pipeline {
                 }
             }
         }
+        stage('Test') {
+            steps {
+                sh 'cd backend && npm test'
+            }
+        }
 
         stage('Build Frontend Docker Image') {
             steps {
