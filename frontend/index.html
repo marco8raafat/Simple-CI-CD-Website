@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CI/CD Website</title>
+</head>
+<body>
+    <h1>CI/CD Demo 🚀</h1>
+    <button onclick="loadData()">Call Backend</button>
+    <p id="result"></p>
+
+    <script>
+        async function loadData() {
+            const res = await fetch("http://localhost:3000/api");
+            const data = await res.json();
+            document.getElementById("result").innerText = data.message;
+        }
+    </script>
+</body>
+</html>
