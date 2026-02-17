@@ -24,7 +24,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'cd backend && npm test'
+                echo 'Running tests inside container...'
+                sh 'docker run --rm $BACKEND_IMAGE npm test'
             }
         }
 
