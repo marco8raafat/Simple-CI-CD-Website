@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - CI/CD Shop</title>
+    <title>Marketplace</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li class="logo">🛒 CI/CD Shop</li>
+            <li class="logo">🛒 Marketplace</li>
             <li><a href="index.html">Home</a></li>
             <li><a href="products.html">Products</a></li>
             <li><a href="cart.html">Cart<span class="cart-badge" id="cart-count">0</span></a></li>
@@ -17,7 +17,21 @@
     </nav>
 
     <div class="container">
-        <h1 style="margin-bottom: 2rem; color: #333;">Our Products</h1>
+        <h1>Marketplace</h1>
+        
+        <div class="search-container">
+            <input type="text" class="search-bar" id="search-bar" placeholder="Search Marketplace">
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">All items</button>
+            <button class="filter-btn" data-category="electronics">Electronics</button>
+            <button class="filter-btn" data-category="accessories">Accessories</button>
+            <button class="filter-btn" data-category="furniture">Furniture</button>
+            <button class="filter-btn" data-price="low">Under $100</button>
+            <button class="filter-btn" data-price="medium">$100 - $300</button>
+            <button class="filter-btn" data-price="high">Over $300</button>
+        </div>
         
         <div id="message"></div>
         
@@ -28,6 +42,8 @@
 
     <script>
         const API_URL = 'http://localhost:3000/api';
+        let allProducts = [];
+        let currentFilter = { category: 'all', price: null };
 
         // Load cart count
         function updateCartCount() {
@@ -52,33 +68,107 @@
             
             // Show success message
             const messageDiv = document.getElementById('message');
-            messageDiv.innerHTML = '<div class="message success">✓ Product added to cart!</div>';
-            setTimeout(() => messageDiv.innerHTML = '', 3000);
+            messageDiv.innerHTML = '<div class="message success">✓ Added to cart</div>';
+            setTimeout(() => messageDiv.innerHTML = '', 2000);
+        }
+
+        // Filter products
+        function filterProducts() {
+            let filtered = [...allProducts];
+            
+            // Search filter
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) || 
+                    p.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Category filter
+            if (currentFilter.category !== 'all') {
+                filtered = filtered.filter(p => p.category === currentFilter.category);
+            }
+            
+            // Price filter
+            if (currentFilter.price === 'low') {
+                filtered = filtered.filter(p => p.price < 100);
+            } else if (currentFilter.price === 'medium') {
+                filtered = filtered.filter(p => p.price >= 100 && p.price <= 300);
+            } else if (currentFilter.price === 'high') {
+                filtered = filtered.filter(p => p.price > 300);
+            }
+            
+            renderProducts(filtered);
+        }
+
+        // Render products
+        function renderProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #65676b; padding: 2rem;">No items found</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.emoji}</div>
+                    <h3>${product.name}</h3>
+                    <div class="price">$${product.price.toFixed(2)}</div>
+                    <p>${product.description}</p>
+                    <button class="btn" onclick='addToCart(${JSON.stringify(product)})'>
+                        Add to cart
+                    </button>
+                </div>
+            `).join('');
         }
 
         // Load products
         async function loadProducts() {
             try {
                 const response = await fetch(`${API_URL}/products`);
-                const products = await response.json();
+                allProducts = await response.json();
                 
-                const grid = document.getElementById('products-grid');
-                grid.innerHTML = products.map(product => `
-                    <div class="product-card">
-                        <div class="product-image">${product.emoji}</div>
-                        <h3>${product.name}</h3>
-                        <p>${product.description}</p>
-                        <div class="price">$${product.price.toFixed(2)}</div>
-                        <button class="btn" onclick='addToCart(${JSON.stringify(product)})'>
-                            Add to Cart
-                        </button>
-                    </div>
-                `).join('');
+                // Add categories to products
+                allProducts = allProducts.map(p => {
+                    let category = 'electronics';
+                    if (p.name.includes('Desk')) category = 'furniture';
+                    if (p.name.includes('Mouse') || p.name.includes('Keyboard') || p.name.includes('Hub')) category = 'accessories';
+                    return { ...p, category };
+                });
+                
+                renderProducts(allProducts);
             } catch (error) {
                 document.getElementById('message').innerHTML = 
                     '<div class="message error">Failed to load products. Make sure the backend is running!</div>';
             }
         }
+
+        // Filter button handlers
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.dataset.category) {
+                    // Remove active from category buttons
+                    document.querySelectorAll('[data-category]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter.category = this.dataset.category;
+                } else if (this.dataset.price) {
+                    // Toggle price filter
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        currentFilter.price = null;
+                    } else {
+                        document.querySelectorAll('[data-price]').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        currentFilter.price = this.dataset.price;
+                    }
+                }
+                filterProducts();
+            });
+        });
+
+        // Search handler
+        document.getElementById('search-bar').addEventListener('input', filterProducts);
 
         // Initialize
         updateCartCount();

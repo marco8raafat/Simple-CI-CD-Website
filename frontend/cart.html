@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - CI/CD Shop</title>
+    <title>Cart - Marketplace</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li class="logo">🛒 CI/CD Shop</li>
+            <li class="logo">🛒 Marketplace</li>
             <li><a href="index.html">Home</a></li>
             <li><a href="products.html">Products</a></li>
             <li><a href="cart.html">Cart<span class="cart-badge" id="cart-count">0</span></a></li>
@@ -17,7 +17,7 @@
     </nav>
 
     <div class="container">
-        <h1 style="margin-bottom: 2rem; color: #333;">Shopping Cart</h1>
+        <h1>Your cart</h1>
         
         <div id="cart-content"></div>
     </div>
@@ -75,8 +75,8 @@
                 contentDiv.innerHTML = `
                     <div class="empty-cart">
                         <h2>Your cart is empty</h2>
-                        <p>Add some products to get started!</p>
-                        <a href="products.html"><button class="btn">Browse Products</button></a>
+                        <p style="margin-bottom: 1rem;">Start shopping to add items</p>
+                        <a href="products.html"><button class="btn">Browse items</button></a>
                     </div>
                 `;
                 return;
@@ -85,49 +85,51 @@
             const { subtotal, tax, shipping, total } = calculateTotals(cart);
             
             contentDiv.innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 350px; gap: 2rem;">
+                <div style="display: grid; grid-template-columns: 1fr 350px; gap: 1rem;">
                     <div class="cart-items">
                         ${cart.map(item => `
                             <div class="cart-item">
                                 <div class="cart-item-image">${item.emoji}</div>
                                 <div class="cart-item-details">
                                     <h3>${item.name}</h3>
-                                    <p>$${item.price.toFixed(2)} each</p>
+                                    <p style="font-weight: 600; color: #050505;">$${item.price.toFixed(2)} each</p>
                                     <div class="quantity-controls">
                                         <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                                        <span style="padding: 0 1rem; font-weight: bold;">${item.quantity}</span>
+                                        <span style="padding: 0 0.75rem; font-weight: 600;">${item.quantity}</span>
                                         <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                                        <button class="btn btn-danger" style="margin-left: 1rem;" onclick="removeItem(${item.id})">Remove</button>
                                     </div>
                                 </div>
-                                <div style="font-size: 1.3rem; font-weight: bold; color: #667eea;">
-                                    $${(item.price * item.quantity).toFixed(2)}
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+                                    <div style="font-size: 1.125rem; font-weight: 700;">
+                                        $${(item.price * item.quantity).toFixed(2)}
+                                    </div>
+                                    <button class="btn btn-danger" style="margin: 0; padding: 0.375rem 0.75rem; font-size: 0.875rem;" onclick="removeItem(${item.id})">Remove</button>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
                     
                     <div class="cart-summary">
-                        <h2 style="margin-bottom: 1.5rem;">Order Summary</h2>
+                        <h2 style="margin-bottom: 1rem;">Summary</h2>
                         <div class="summary-row">
-                            <span>Subtotal:</span>
+                            <span>Subtotal</span>
                             <span>$${subtotal.toFixed(2)}</span>
                         </div>
                         <div class="summary-row">
-                            <span>Tax (10%):</span>
+                            <span>Tax (10%)</span>
                             <span>$${tax.toFixed(2)}</span>
                         </div>
                         <div class="summary-row">
-                            <span>Shipping:</span>
+                            <span>Shipping</span>
                             <span>$${shipping.toFixed(2)}</span>
                         </div>
                         <div class="summary-row total">
-                            <span>Total:</span>
+                            <span>Total</span>
                             <span>$${total.toFixed(2)}</span>
                         </div>
                         <a href="checkout.html">
-                            <button class="btn" style="width: 100%; margin-top: 1rem;">
-                                Proceed to Checkout
+                            <button class="btn" style="width: 100%; margin: 1rem 0 0 0;">
+                                Checkout
                             </button>
                         </a>
                     </div>

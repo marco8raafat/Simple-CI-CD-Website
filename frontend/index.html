@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CI/CD Shop - Home</title>
+    <title>Marketplace</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li class="logo">🛒 CI/CD Shop</li>
+            <li class="logo">🛒 Marketplace</li>
             <li><a href="index.html">Home</a></li>
             <li><a href="products.html">Products</a></li>
             <li><a href="cart.html">Cart<span class="cart-badge" id="cart-count">0</span></a></li>
@@ -17,39 +17,36 @@
     </nav>
 
     <div class="hero">
-        <h1>Welcome to CI/CD Shop 🚀</h1>
-        <p>Your one-stop shop for developer essentials</p>
-        <p style="margin-top: 1rem;">Built with modern CI/CD pipeline using Docker, Jenkins & GitHub</p>
+        <h1>Welcome to Marketplace 🛒</h1>
+        <p>Browse and buy items from people near you</p>
         <a href="products.html">
-            <button class="btn" style="margin-top: 2rem; padding: 1rem 2rem; font-size: 1.1rem;">
-                Browse Products
+            <button class="btn" style="margin: 1rem 0 0 0;">
+                Browse all items
             </button>
         </a>
     </div>
 
     <div class="container">
-        <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Featured Products</h2>
+        <h2 style="margin-bottom: 1rem;">Today's picks</h2>
         
         <div class="products-grid" id="featured-products">
             <!-- Featured products will be loaded here -->
         </div>
 
-        <div style="text-align: center; margin-top: 3rem;">
-            <a href="products.html"><button class="btn">View All Products</button></a>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="products.html"><button class="btn">See all listings</button></a>
         </div>
 
-        <div style="margin-top: 4rem; padding: 3rem; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <h2 style="text-align: center; margin-bottom: 2rem;">Backend API Status</h2>
-            <div style="text-align: center;">
-                <button class="btn" onclick="checkBackend()">Check Backend Health</button>
-                <div id="api-result" style="margin-top: 1rem;"></div>
-            </div>
+        <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+            <h2 style="margin-bottom: 1rem;">API Status</h2>
+            <button class="btn btn-secondary" onclick="checkBackend()">Check health</button>
+            <div id="api-result" style="margin-top: 1rem;"></div>
         </div>
     </div>
 
-    <footer style="background: #333; color: white; padding: 2rem; text-align: center; margin-top: 4rem;">
-        <p>© 2026 CI/CD Shop - Demo E-commerce Application</p>
-        <p style="margin-top: 0.5rem; opacity: 0.8;">Built with Express.js, Docker & Jenkins</p>
+    <footer style="background: #ffffff; border-top: 1px solid #e4e6eb; padding: 2rem; text-align: center; margin-top: 2rem;">
+        <p style="color: #65676b; font-size: 0.875rem;">© 2026 Marketplace - Demo E-commerce Application</p>
+        <p style="margin-top: 0.5rem; color: #65676b; font-size: 0.8125rem;">Built with Express.js, Docker & Jenkins</p>
     </footer>
 
     <script>
@@ -75,7 +72,17 @@
             
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-            alert('Product added to cart! 🎉');
+            
+            // Show simple alert
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message success';
+            messageDiv.style.position = 'fixed';
+            messageDiv.style.top = '5rem';
+            messageDiv.style.right = '1rem';
+            messageDiv.style.zIndex = '10000';
+            messageDiv.textContent = '✓ Added to cart';
+            document.body.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 2000);
         }
 
         // Load featured products
@@ -92,32 +99,29 @@
                     <div class="product-card">
                         <div class="product-image">${product.emoji}</div>
                         <h3>${product.name}</h3>
-                        <p>${product.description}</p>
                         <div class="price">$${product.price.toFixed(2)}</div>
+                        <p>${product.description}</p>
                         <button class="btn" onclick='addToCart(${JSON.stringify(product)})'>
-                            Add to Cart
+                            Add to cart
                         </button>
                     </div>
                 `).join('');
             } catch (error) {
                 document.getElementById('featured-products').innerHTML = 
-                    '<p style="text-align: center; color: #666;">Unable to load products. Make sure the backend is running!</p>';
+                    '<p style="text-align: center; color: #65676b; grid-column: 1/-1;">Unable to load products. Make sure the backend is running!</p>';
             }
         }
 
         // Check backend health
-        async function checkBackend() {
-            const resultDiv = document.getElementById('api-result');
-            resultDiv.innerHTML = '<p>Checking...</p>';
-            
-            try {
-                const response = await fetch(`${API_URL}/health`);
-                const data = await response.json();
-                
+        async function checkBackend() {healthy</strong>
+                        <p style="margin-top: 0.5rem;">Uptime: ${Math.floor(data.uptime)}s | Products: ${data.products} | Orders: ${data.orders}</p>
+                    </div>
+                `;
+            } catch (error) {
                 resultDiv.innerHTML = `
-                    <div class="message success">
-                        <strong>✓ Backend is running!</strong>
-                        <p>Status: ${data.status}</p>
+                    <div class="message error">
+                        <strong>✗ Backend is not responding</strong>
+                        <p style="margin-top: 0.5rem;">Run
                         <p>Uptime: ${Math.floor(data.uptime)} seconds</p>
                         <p>Products available: ${data.products}</p>
                         <p>Orders received: ${data.orders}</p>

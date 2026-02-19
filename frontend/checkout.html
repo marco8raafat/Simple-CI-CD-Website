@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - CI/CD Shop</title>
+    <title>Checkout - Marketplace</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li class="logo">🛒 CI/CD Shop</li>
+            <li class="logo">🛒 Marketplace</li>
             <li><a href="index.html">Home</a></li>
             <li><a href="products.html">Products</a></li>
             <li><a href="cart.html">Cart<span class="cart-badge" id="cart-count">0</span></a></li>
@@ -17,13 +17,13 @@
     </nav>
 
     <div class="container">
-        <h1 style="margin-bottom: 2rem; color: #333;">Checkout</h1>
+        <h1>Checkout</h1>
         
         <div id="message"></div>
         
-        <div style="display: grid; grid-template-columns: 1fr 400px; gap: 2rem;">
+        <div style="display: grid; grid-template-columns: 1fr 400px; gap: 1rem;">
             <div class="checkout-form">
-                <h2 style="margin-bottom: 1.5rem;">Shipping Information</h2>
+                <h2 style="margin-bottom: 1rem;">Shipping information</h2>
                 
                 <form id="checkout-form">
                     <div class="form-row">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     
-                    <h2 style="margin: 2rem 0 1.5rem;">Payment Information</h2>
+                    <h2 style="margin: 1.5rem 0 1rem;">Payment information</h2>
                     
                     <div class="form-group">
                         <label for="cardNumber">Card Number *</label>
@@ -100,41 +100,41 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="notes">Order Notes (Optional)</label>
-                        <textarea id="notes" name="notes" rows="3" placeholder="Any special instructions..."></textarea>
+                        <label for="notes">Order notes (optional)</label>
+                        <textarea id="notes" name="notes" rows="3" placeholder="Special instructions..."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-success" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
-                        Place Order
+                    <button type="submit" class="btn btn-success" style="width: 100%; padding: 0.75rem; margin: 0;">
+                        Place order
                     </button>
                 </form>
             </div>
             
             <div>
-                <div class="cart-summary" style="margin-bottom: 2rem;">
-                    <h2 style="margin-bottom: 1.5rem;">Order Summary</h2>
-                    <div id="order-items" style="margin-bottom: 1.5rem;"></div>
+                <div class="cart-summary" style="margin-bottom: 1rem;">
+                    <h2 style="margin-bottom: 1rem;">Order summary</h2>
+                    <div id="order-items" style="margin-bottom: 1rem;"></div>
                     <div class="summary-row">
-                        <span>Subtotal:</span>
+                        <span>Subtotal</span>
                         <span id="subtotal">$0.00</span>
                     </div>
                     <div class="summary-row">
-                        <span>Tax (10%):</span>
+                        <span>Tax (10%)</span>
                         <span id="tax">$0.00</span>
                     </div>
                     <div class="summary-row">
-                        <span>Shipping:</span>
+                        <span>Shipping</span>
                         <span id="shipping">$0.00</span>
                     </div>
                     <div class="summary-row total">
-                        <span>Total:</span>
+                        <span>Total</span>
                         <span id="total">$0.00</span>
                     </div>
                 </div>
                 
-                <div style="background: #e7f3ff; padding: 1.5rem; border-radius: 10px; font-size: 0.9rem;">
-                    <p style="margin-bottom: 0.5rem;">🔒 Secure Checkout</p>
-                    <p style="color: #666;">Your payment information is encrypted and secure.</p>
+                <div style="background: #e7f3ff; padding: 1rem; border-radius: 8px; font-size: 0.875rem;">
+                    <p style="margin-bottom: 0.25rem; font-weight: 600;">🔒 Secure checkout</p>
+                    <p style="color: #65676b; font-size: 0.8125rem;">Your payment information is encrypted</p>
                 </div>
             </div>
         </div>
@@ -172,9 +172,9 @@
             const { subtotal, tax, shipping, total } = calculateTotals(cart);
             
             const itemsHtml = cart.map(item => `
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #eee;">
-                    <span>${item.name} × ${item.quantity}</span>
-                    <span style="font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</span>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e4e6eb; font-size: 0.875rem;">
+                    <span style="color: #65676b;">${item.name} × ${item.quantity}</span>
+                    <span style="font-weight: 600; color: #050505;">$${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
             `).join('');
             
@@ -230,10 +230,10 @@
                     // Show success message
                     document.getElementById('message').innerHTML = `
                         <div class="message success">
-                            <h2>✓ Order Placed Successfully!</h2>
-                            <p>Order ID: ${result.orderId}</p>
-                            <p>Thank you for your purchase! You will receive a confirmation email shortly.</p>
-                            <a href="products.html"><button class="btn" style="margin-top: 1rem;">Continue Shopping</button></a>
+                            <h2 style="font-size: 1.25rem; margin-bottom: 0.5rem;">✓ Order placed successfully!</h2>
+                            <p style="margin-bottom: 0.25rem;">Order ID: <strong>${result.orderId}</strong></p>
+                            <p style="color: #65676b;">Thank you for your purchase. You'll receive a confirmation email shortly.</p>
+                            <a href="products.html"><button class="btn" style="margin-top: 1rem;">Continue shopping</button></a>
                         </div>
                     `;
                     
