@@ -119,9 +119,20 @@ app.post("/api/orders", (req, res) => {
     
     orders.push(order);
     
-    console.log(`New order received: ${order.orderId}`);
+    console.log(`\n========== New Order Received ==========`);
+    console.log(`Order ID: ${order.orderId}`);
     console.log(`Customer: ${customer.firstName} ${customer.lastName}`);
-    console.log(`Items: ${items.length}, Total: $${totals.total.toFixed(2)}`);
+    console.log(`Email: ${customer.email}`);
+    console.log(`\nOrder Items:`);
+    items.forEach((item, index) => {
+      console.log(`  ${index + 1}. ${item.name} - Quantity: ${item.quantity} - Price: $${item.price.toFixed(2)} each`);
+    });
+    console.log(`\nOrder Summary:`);
+    console.log(`  Subtotal: $${totals.subtotal.toFixed(2)}`);
+    console.log(`  Tax: $${totals.tax.toFixed(2)}`);
+    console.log(`  Shipping: $${totals.shipping.toFixed(2)}`);
+    console.log(`  Total: $${totals.total.toFixed(2)}`);
+    console.log(`========================================\n`);
     
     res.status(201).json({
       message: "Order placed successfully",
